@@ -1,5 +1,13 @@
+import ProfileInfo from "../features/profile/ProfileInfo";
+import ListCollection from "../features/profile/ListCollection";
+
 function Profile() {
-  return <div></div>;
+  return (
+    <>
+      <ProfileInfo />
+      <ListCollection />
+    </>
+  );
 }
 
 export default Profile;
