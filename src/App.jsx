@@ -5,6 +5,7 @@ import Profile from "./pages/Profile";
 import { List } from "@mui/material";
 import { Recommend } from "@mui/icons-material";
 import AppLayout from "./ui/AppLayout";
+import Results from "./pages/Results";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route element={<AppLayout />}>
           <Route path="/" element={<Navigate replace to="search" />} />
           <Route path="search" element={<Search />} />
+          <Route path="results" element={<Results />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/list" element={<List />} />
           <Route path="/recommend" element={<Recommend />} />
