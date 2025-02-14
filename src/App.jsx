@@ -2,8 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Search from "./pages/Search";
 import Game from "./pages/Game";
 import Profile from "./pages/Profile";
-import { List } from "@mui/material";
-import { Recommend } from "@mui/icons-material";
+import GameList from "./pages/GameList";
 import AppLayout from "./ui/AppLayout";
 import Results from "./pages/Results";
 
@@ -16,8 +15,7 @@ function App() {
           <Route path="search" element={<Search />} />
           <Route path="results" element={<Results />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/list" element={<List />} />
-          <Route path="/recommend" element={<Recommend />} />
+          <Route path="/list" element={<GameList />} />
           <Route path="/game" element={<Game />} />
         </Route>
       </Routes>

@@ -1,4 +1,4 @@
-import { Grid2, Typography } from "@mui/material";
+import { Grid2, List, Typography } from "@mui/material";
 import GameListItem from "../lists/GameListItem";
 
 function ListCollection() {
@@ -9,9 +9,10 @@ function ListCollection() {
 
         <Grid2 item size={10}>
           <Typography variant="h3">Your Lists</Typography>
-          <ul>
+          <List>
             <GameListItem />
-          </ul>
+            <GameListItem />
+          </List>
         </Grid2>
         <Grid2 item size={1} />
       </Grid2>
