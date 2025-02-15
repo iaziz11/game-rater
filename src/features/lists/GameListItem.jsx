@@ -1,6 +1,7 @@
 import { ListItem, Typography } from "@mui/material";
 
-function GameListItem() {
+function GameListItem({ data }) {
+  const { name } = data;
   return (
     <ListItem
       sx={{
@@ -10,8 +11,8 @@ function GameListItem() {
         backgroundColor: "gray",
       }}
     >
-      <img src="sword.png" width={50} height={50} />
-      <Typography variant="h4">List Name</Typography>
+      <img src="/sword.png" width={50} height={50} />
+      <Typography variant="h4">{name}</Typography>
     </ListItem>
   );
 }

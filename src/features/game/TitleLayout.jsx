@@ -2,12 +2,15 @@ import { Box, Grid2, Typography } from "@mui/material";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import GenreTag from "./GenreTag";
 
-function TitleLayout() {
+function TitleLayout({ data, rating }) {
+  const { name, first_release_date, genres } = data;
+  console.log(genres);
+  const year = new Date(first_release_date * 1000).getFullYear();
   return (
     <Grid2 container spacing={2} sx={{ margin: "50px", border: "solid black" }}>
       <Grid2 item size={4}>
         <img
-          src="test.webp"
+          src="/test.webp"
           alt="poster"
           width="315px"
           height="480px"
@@ -16,11 +19,11 @@ function TitleLayout() {
       </Grid2>
       <Grid2 item size={8}>
         <Typography variant="h2" sx={{ padding: "50px 0px 0px 0px" }}>
-          Title
+          {name}
         </Typography>
-        <Typography variant="h4">Year</Typography>
+        <Typography variant="h4">{year}</Typography>
         <div>
-          <span>Rating:</span>
+          <span>Rating: {rating}</span>
           <StarBorderIcon />
         </div>
         <Box
@@ -31,7 +34,9 @@ function TitleLayout() {
             padding: "5px 5px",
           }}
         >
-          <GenreTag icon="sword.png" genreName="Adventure" />
+          {genres.map((e) => (
+            <GenreTag key={e} icon="/sword.png" genreName={e} />
+          ))}
         </Box>
       </Grid2>
     </Grid2>

@@ -1,5 +1,6 @@
 import { Grid2, List, Typography } from "@mui/material";
 import GameListItem from "../lists/GameListItem";
+import game_data from "../../../test_data/test_game_data.json";
 
 function ListCollection() {
   return (
@@ -10,8 +11,9 @@ function ListCollection() {
         <Grid2 item size={10}>
           <Typography variant="h3">Your Lists</Typography>
           <List>
-            <GameListItem />
-            <GameListItem />
+            {game_data.map((e) => (
+              <GameListItem key={e.id} data={e} />
+            ))}
           </List>
         </Grid2>
         <Grid2 item size={1} />

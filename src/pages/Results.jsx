@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ResultListItem from "../features/search/ResultListItem";
+import game_data from "../../test_data/test_game_data.json";
 
 function Results() {
   return (
@@ -30,12 +31,12 @@ function Results() {
         <Grid2 item size={2} />
       </Grid2>
       <Typography variant="h3" sx={{ margin: "40px 0px 40px 0px" }}>
-        Results for "The Legend of Zelda: Breath of the Wild"
+        Results for "Zelda"
       </Typography>
       <List>
-        <ResultListItem />
-        <ResultListItem />
-        <ResultListItem />
+        {game_data.map((e) => (
+          <ResultListItem key={e.id} data={e} />
+        ))}
       </List>
     </>
   );

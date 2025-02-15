@@ -1,7 +1,9 @@
 import { Grid2, List, Typography } from "@mui/material";
 import GameListItem from "../features/lists/GameListItem";
+import game_data from "../../test_data/test_game_data.json";
 
 function GameList() {
+  console.log(game_data);
   return (
     <>
       <Grid2 container>
@@ -16,9 +18,9 @@ function GameList() {
         </Grid2>
       </Grid2>
       <List>
-        <GameListItem />
-        <GameListItem />
-        <GameListItem />
+        {game_data.map((e) => (
+          <GameListItem key={e.id} data={e} />
+        ))}
       </List>
     </>
   );
