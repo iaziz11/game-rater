@@ -1,12 +1,5 @@
-import {
-  FormControl,
-  Grid2,
-  Typography,
-  Input,
-  InputAdornment,
-  Box,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { Grid2, Typography, Box } from "@mui/material";
+import SearchBar from "./SearchBar";
 
 function SearchLayout() {
   return (
@@ -21,17 +14,7 @@ function SearchLayout() {
           <Typography variant="h2" sx={{ mt: "90px" }}>
             Search For A Game
           </Typography>
-          <FormControl variant="standard" sx={{ width: "100%", mt: "100px" }}>
-            <Input
-              id="input-with-icon-adornment"
-              variant="outlined"
-              startAdornment={
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              }
-            />
-          </FormControl>
+          <SearchBar />
         </Box>
       </Grid2>
     </>

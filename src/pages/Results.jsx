@@ -1,43 +1,47 @@
-import {
-  FormControl,
-  Grid2,
-  Input,
-  InputAdornment,
-  List,
-  Typography,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { Grid2, List, Typography } from "@mui/material";
 import ResultListItem from "../features/search/ResultListItem";
-import game_data from "../../test_data/test_game_data.json";
+import { useQuery } from "react-query";
+import { useLocation } from "react-router-dom";
+import { fetchGamesFromSearch } from "../services/gamesApi";
+import SearchBar from "../features/search/SearchBar";
 
 function Results() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get("q");
+  const { data, isLoading, isError, error } = useQuery(
+    [searchQuery],
+    () => fetchGamesFromSearch(searchQuery),
+    {
+      staleTime: 60000,
+    }
+  );
   return (
     <>
       <Grid2 container>
         <Grid2 item size={2} />
         <Grid2 item size={8}>
-          <FormControl variant="standard" sx={{ width: "100%", mt: "100px" }}>
-            <Input
-              id="input-with-icon-adornment"
-              variant="outlined"
-              startAdornment={
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              }
-            />
-          </FormControl>
+          <SearchBar />
         </Grid2>
         <Grid2 item size={2} />
       </Grid2>
-      <Typography variant="h3" sx={{ margin: "40px 0px 40px 0px" }}>
-        Results for "Zelda"
-      </Typography>
-      <List>
-        {game_data.map((e) => (
-          <ResultListItem key={e.id} data={e} />
-        ))}
-      </List>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : isError ? (
+        <p>{error}</p>
+      ) : (
+        <>
+          <Typography variant="h3" sx={{ margin: "40px 0px 40px 0px" }}>
+            Results for &quot;{searchQuery}&quot;
+          </Typography>
+
+          <List>
+            {data?.map((e) => (
+              <ResultListItem key={e.id} data={e} />
+            ))}
+          </List>
+        </>
+      )}
     </>
   );
 }
