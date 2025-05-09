@@ -3,7 +3,6 @@ import GameListItem from "../features/lists/GameListItem";
 import game_data from "../../test_data/test_game_data.json";
 
 function GameList() {
-  console.log(game_data);
   return (
     <>
       <Grid2 container>
