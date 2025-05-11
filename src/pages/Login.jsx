@@ -7,13 +7,14 @@ import { AuthContext } from "../contexts/AuthContext";
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const navigate = useNavigate();
-  const { currentUser, login } = useContext(AuthContext);
+  const { login, isUserLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
-    if (currentUser) {
+    console.log(isUserLoggedIn);
+    if (isUserLoggedIn) {
       navigate("/search");
     }
-  }, [currentUser, navigate]);
+  }, [isUserLoggedIn, navigate]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));

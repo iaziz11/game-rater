@@ -1,7 +1,6 @@
 import { ListItem, Typography } from "@mui/material";
 
-function GameListItem({ data }) {
-  const { name } = data;
+function GameListItem({ name }) {
   return (
     <ListItem
       sx={{
