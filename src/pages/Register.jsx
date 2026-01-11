@@ -5,9 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const navigate = useNavigate();
-  const { login, isUserLoggedIn } = useContext(AuthContext);
+  const { isUserLoggedIn, register } = useContext(AuthContext);
 
   useEffect(() => {
     if (isUserLoggedIn) {
@@ -21,8 +25,8 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log("Login attempt:", formData);
-    login(formData.email, formData.password);
+    if (formData.password != formData.confirmPassword) return;
+    register(formData.email, formData.password);
   }
 
   return (
@@ -34,7 +38,7 @@ const Login = () => {
     >
       <Paper elevation={3} sx={{ p: 4, width: 300 }}>
         <Typography variant="h5" textAlign="center" mb={2}>
-          Log in to GameShelf
+          Register for GameShelf
         </Typography>
         <form onSubmit={handleSubmit}>
           <TextField
@@ -59,8 +63,19 @@ const Login = () => {
             onChange={handleChange}
             required
           />
+          <TextField
+            fullWidth
+            label="Confirm password"
+            name="confirmPassword"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            required
+          />
           <Button fullWidth variant="contained" type="submit" sx={{ mt: 2 }}>
-            Login
+            Register
           </Button>
         </form>
       </Paper>

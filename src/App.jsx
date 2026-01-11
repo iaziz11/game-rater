@@ -7,6 +7,8 @@ import GameList from "./pages/GameList";
 import AppLayout from "./ui/AppLayout";
 import Results from "./pages/Results";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import RequireAuth from "./auth/RequireAuth";
 
 function App() {
   return (
@@ -14,13 +16,56 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route element={<AppLayout />}>
-            <Route path="/" element={<Navigate replace to="search" />} />
-            <Route path="/search" element={<Search />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/results" element={<Results />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/list/:id" element={<GameList />} />
-            <Route path="/game/:id" element={<Game />} />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Navigate replace to="search" />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <RequireAuth>
+                  <Search />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/results"
+              element={
+                <RequireAuth>
+                  <Results />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <RequireAuth>
+                  <Profile />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/list/:id"
+              element={
+                <RequireAuth>
+                  <GameList />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/game/:id"
+              element={
+                <RequireAuth>
+                  <Game />
+                </RequireAuth>
+              }
+            />
           </Route>
         </Routes>
       </AuthProvider>

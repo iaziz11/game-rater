@@ -4,7 +4,7 @@ import ListCollection from "../features/profile/ListCollection";
 function Profile() {
   return (
     <>
-      <ProfileInfo />
+      {/* <ProfileInfo /> */}
       <ListCollection />
     </>
   );
