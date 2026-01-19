@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  apiKey: "AIzaSyDN3WKxKtzCu3aGx_MX1ITP9pymKqU9QPg",
   authDomain: "video-game-proje.firebaseapp.com",
   projectId: "video-game-proje",
   storageBucket: "video-game-proje.firebasestorage.app",
