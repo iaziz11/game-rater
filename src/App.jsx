@@ -7,6 +7,7 @@ import GameList from "./pages/GameList";
 import AppLayout from "./ui/AppLayout";
 import Results from "./pages/Results";
 import Login from "./pages/Login";
+import Home from "./pages/Home"
 import Register from "./pages/Register";
 import RequireAuth from "./auth/RequireAuth";
 
@@ -21,9 +22,7 @@ function App() {
             <Route
               path="/"
               element={
-                <RequireAuth>
-                  <Navigate replace to="search" />
-                </RequireAuth>
+                  <Home />
               }
             />
             <Route
