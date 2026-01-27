@@ -17,7 +17,6 @@ steps:
 uses: actions/checkout@v4
 
 
-# If you use Node.js (React, Vite, Next static, etc.)
 - name: Setup Node
 uses: actions/setup-node@v4
 with:
