@@ -1,63 +1,3 @@
-// import { Menu, MenuItem } from "@mui/material";
-// import { useContext, useEffect, useState } from "react";
-// import { AuthContext } from "../contexts/AuthContext";
-// import { getListsFromUser } from "../services/userFunctions";
-// import { addGameToList } from "../services/gameLists";
-
-// export default function ClickMenu({
-//   isOpen,
-//   mouseX,
-//   mouseY,
-//   handleClose,
-//   gameInfo,
-// }) {
-//   const handleAddGameToList = async (listId) => {
-//     try {
-//       await addGameToList(
-//         gameInfo.gameId,
-//         gameInfo.gameName,
-//         gameInfo.gameThumbnail,
-//         listId
-//       );
-//       handleClose();
-//     } catch (e) {
-//       console.log("Could not add game to list: " + e.message);
-//     }
-//   };
-//   const { currentUser } = useContext(AuthContext);
-//   const [userLists, setUserLists] = useState([]);
-//   useEffect(() => {
-//     const fetchLists = async () => {
-//       if (currentUser) {
-//         const lists = await getListsFromUser(currentUser.email);
-//         const filteredLists = lists.filter(
-//           (e) => e.userCreated === true || e.userCreated === undefined
-//         );
-//         setUserLists(filteredLists);
-//       }
-//     };
-//     fetchLists();
-//   }, [currentUser]);
-//   return (
-//     <>
-//       <Menu
-//         open={isOpen}
-//         onClose={handleClose}
-//         anchorReference="anchorPosition"
-//         anchorPosition={
-//           mouseX !== null ? { top: mouseY, left: mouseX } : undefined
-//         }
-//       >
-//         {userLists.map((e) => (
-//           <MenuItem key={e.id} onClick={() => handleAddGameToList(e.id)}>
-//             {e.listName}
-//           </MenuItem>
-//         ))}
-//       </Menu>
-//     </>
-//   );
-// }
-
 import {
   Box,
   Checkbox,
@@ -96,7 +36,6 @@ export default function ClickMenu({
     const games = list?.games;
     if (!games) return false;
 
-    // Most common: array of { gameId, ... }
     if (Array.isArray(games)) {
       return games.some((g) => {
         if (typeof g === "string") return g === gameId;
@@ -104,7 +43,6 @@ export default function ClickMenu({
       });
     }
 
-    // Sometimes stored as a map keyed by gameId
     if (typeof games === "object") {
       return Boolean(games?.[gameId]);
     }
@@ -128,7 +66,7 @@ export default function ClickMenu({
         );
         setUserLists(filteredLists);
       } catch (e) {
-        console.log("Could not fetch user lists: " + e.message);
+        console.error("Could not fetch user lists: " + e.message);
         setUserLists([]);
       } finally {
         setIsListsLoading(false);
@@ -138,7 +76,6 @@ export default function ClickMenu({
     fetchLists();
   }, [currentUser]);
 
-  // Derive initial checked state from fetched lists + current game
   useEffect(() => {
     if (!gameId) {
       setCheckedListIds(new Set());
@@ -198,9 +135,8 @@ export default function ClickMenu({
         );
         toggleChecked(listId, true);
       }
-      // NOTE: we intentionally do NOT auto-close so users can toggle multiple lists.
     } catch (e) {
-      console.log("Could not update game list membership: " + e.message);
+      console.error("Could not update game list membership: " + e.message);
     } finally {
       setPending(listId, false);
     }
@@ -214,14 +150,16 @@ export default function ClickMenu({
       anchorPosition={
         mouseX !== null ? { top: mouseY, left: mouseX } : undefined
       }
-      PaperProps={{
-        elevation: 10,
-        sx: {
-          borderRadius: 2,
-          overflow: "hidden",
-          minWidth: 260,
-          border: "1px solid",
-          borderColor: "divider",
+      slotProps={{
+        paper: {
+          elevation: 10,
+          sx: {
+            borderRadius: 2,
+            overflow: "hidden",
+            minWidth: 260,
+            border: "1px solid",
+            borderColor: "divider",
+          },
         },
       }}
     >
@@ -309,9 +247,8 @@ export default function ClickMenu({
 
               <ListItemText
                 primary={list.listName}
-                primaryTypographyProps={{
-                  variant: "body2",
-                  sx: { fontWeight: 700 },
+                slotProps={{
+                  primary: { variant: "body2", sx: { fontWeight: 700 } },
                 }}
               />
             </MenuItem>

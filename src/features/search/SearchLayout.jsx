@@ -1,10 +1,6 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
 import SearchBar from "./SearchBar";
 
-/**
- * Optional layout wrapper you can reuse for Search/Results pages.
- * Safe defaults so it won't break if rendered without props.
- */
 function SearchLayout({
   title = "Search games",
   subtitle = "Find a title, rate it, and save it to your lists.",

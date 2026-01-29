@@ -18,7 +18,6 @@ export async function changeGameRating(gameId, userId, newRating) {
   const userSnap = await getDoc(userRef);
 
   if (userSnap.exists()) {
-    console.log("usersnap exists");
     const userData = userSnap.data();
     const existingRating = userData?.ratings?.[gameId];
     if (newRating === null) {
@@ -33,14 +32,13 @@ export async function changeGameRating(gameId, userId, newRating) {
         const q = query(
           listsRef,
           where("user", "==", userId),
-          where("userCreated", "==", false)
+          where("userCreated", "==", false),
         );
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
           const ratedGamesListId = querySnapshot.docs[0].id;
           await removeGameFromList(ratedGamesListId, gameId);
-          console.log(`Removed ${gameId} from ratings and system list.`);
         }
       }
 
@@ -53,7 +51,6 @@ export async function changeGameRating(gameId, userId, newRating) {
       });
     } else {
       // Rating does not exist, optionally add it or handle differently
-      console.log("New rating");
       await updateDoc(userRef, {
         [`ratings.${gameId}`]: newRating,
       });
@@ -61,19 +58,17 @@ export async function changeGameRating(gameId, userId, newRating) {
       const q = query(
         listsRef,
         where("user", "==", userId),
-        where("userCreated", "==", false)
+        where("userCreated", "==", false),
       );
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
         const ratedGamesListId = querySnapshot.docs[0].id;
-        console.log(ratedGamesListId);
         const gameData = await fetchGameFromId(gameId);
-        console.log(gameData);
         await addGameToList(
           gameId,
           gameData[0].name,
           gameData[0].cover.url,
-          ratedGamesListId
+          ratedGamesListId,
         );
       }
     }
@@ -88,19 +83,17 @@ export async function changeGameRating(gameId, userId, newRating) {
     const q = query(
       listsRef,
       where("user", "==", userId),
-      where("userCreated", "==", false)
+      where("userCreated", "==", false),
     );
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       const ratedGamesListId = querySnapshot.docs[0].id;
-      console.log(ratedGamesListId);
       const gameData = await fetchGameFromId(gameId);
-      console.log(gameData);
       await addGameToList(
         gameId,
         gameData[0].name,
         gameData[0].cover.url,
-        ratedGamesListId
+        ratedGamesListId,
       );
     }
   }
@@ -115,14 +108,11 @@ export async function getRatingFromGame(gameId, userId) {
     const rating = userData.ratings?.[gameId];
 
     if (rating !== undefined) {
-      console.log(`Rating for ${gameId}:`, rating);
       return rating;
     } else {
-      console.log(`No rating found for ${gameId}`);
       return null;
     }
   } else {
-    console.log("User not found.");
     return null;
   }
 }
@@ -141,6 +131,5 @@ export async function fetchRatingsFromList(gameList, userId) {
       return;
     });
   }
-  console.log(res);
   return res;
 }

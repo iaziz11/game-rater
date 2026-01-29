@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Chip,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import PlaylistAddRoundedIcon from "@mui/icons-material/PlaylistAddRounded";
@@ -119,8 +112,6 @@ export default function Home() {
                   own custom collections.
                 </Typography>
               </Stack>
-
-              
 
               <Stack
                 direction={{ xs: "column", sm: "row" }}
@@ -275,8 +266,6 @@ export default function Home() {
           />
         </Box>
       </Box>
-
-      
     </Stack>
   );
 }

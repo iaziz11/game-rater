@@ -1,52 +1,3 @@
-// import { Grid2, Typography } from "@mui/material";
-
-// function formatPlaytime(seconds) {
-//   const totalMinutes = Math.floor(seconds / 60);
-
-//   if (totalMinutes < 60) {
-//     return `${totalMinutes} min`;
-//   }
-
-//   const hours = Math.floor(totalMinutes / 60);
-//   const minutes = totalMinutes % 60;
-
-//   return minutes === 0
-//     ? `${hours} hr${hours > 1 ? "s" : ""}`
-//     : `${hours} hr${hours > 1 ? "s" : ""} ${minutes} min`;
-// }
-
-// function DetailsLayout({ data }) {
-//   const { summary, storyline, platforms, first_release_date } = data;
-//   const timeToBeat =
-//     data.time_to_beat.length > 0 ? data.time_to_beat[0].hastily : null;
-//   return (
-//     <Grid2 container sx={{ backgroundColor: "green", margin: "50px" }}>
-//       <Grid2 size={11}>
-//         <Typography variant="h5">{storyline || summary}</Typography>
-//         <Typography variant="h6" sx={{ marginTop: "5px" }}>
-//           Platforms:{" "}
-//           {platforms.reduce(
-//             (acc, cur, idx) => (idx === 0 ? cur.name : acc + ", " + cur.name),
-//             ""
-//           )}
-//         </Typography>
-//         {first_release_date && (
-//           <Typography variant="subtitle1" sx={{ marginTop: "5px" }}>
-//             Release Date: {new Date(first_release_date * 1000).toDateString()}
-//           </Typography>
-//         )}
-//         {timeToBeat && (
-//           <Typography variant="subtitle1" sx={{ marginTop: "5px" }}>
-//             Time to beat: {formatPlaytime(timeToBeat)}
-//           </Typography>
-//         )}
-//       </Grid2>
-//     </Grid2>
-//   );
-// }
-
-// export default DetailsLayout;
-
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import DevicesRoundedIcon from "@mui/icons-material/DevicesRounded";
@@ -71,7 +22,6 @@ function DetailsLayout({ data }) {
   const platforms = Array.isArray(data?.platforms) ? data.platforms : [];
   const first_release_date = data?.first_release_date;
 
-  // IGDB time_to_beat can vary; guard hard.
   let timeToBeatSeconds = null;
   const ttb = data?.time_to_beat;
   if (Array.isArray(ttb) && ttb.length > 0) {
@@ -135,9 +85,17 @@ function DetailsLayout({ data }) {
               bgcolor: "grey.50",
             }}
           >
-            <Stack direction="row" spacing={1.25} alignItems="center">
-              <CalendarMonthRoundedIcon color="action" />
-              <Box>
+            <Stack
+              direction="row"
+              spacing={1.25}
+              alignItems="center"
+              height="100%"
+            >
+              <Box height="100%">
+                <CalendarMonthRoundedIcon color="action" />
+              </Box>
+
+              <Box height="100%">
                 <Typography
                   variant="caption"
                   color="text.secondary"
@@ -161,8 +119,15 @@ function DetailsLayout({ data }) {
               bgcolor: "grey.50",
             }}
           >
-            <Stack direction="row" spacing={1.25} alignItems="center">
-              <DevicesRoundedIcon color="action" />
+            <Stack
+              direction="row"
+              spacing={1.25}
+              alignItems="center"
+              height="100%"
+            >
+              <Box height="100%">
+                <DevicesRoundedIcon color="action" />
+              </Box>
               <Box sx={{ minWidth: 0 }}>
                 <Typography
                   variant="caption"
@@ -171,11 +136,7 @@ function DetailsLayout({ data }) {
                 >
                   Platforms
                 </Typography>
-                <Typography
-                  sx={{ fontWeight: 900 }}
-                  noWrap
-                  title={platformText}
-                >
+                <Typography sx={{ fontWeight: 900 }} title={platformText}>
                   {platformText || "—"}
                 </Typography>
               </Box>
@@ -191,9 +152,16 @@ function DetailsLayout({ data }) {
               bgcolor: "grey.50",
             }}
           >
-            <Stack direction="row" spacing={1.25} alignItems="center">
-              <TimerRoundedIcon color="action" />
-              <Box>
+            <Stack
+              direction="row"
+              spacing={1.25}
+              alignItems="center"
+              height="100%"
+            >
+              <Box height="100%">
+                <TimerRoundedIcon color="action" />
+              </Box>
+              <Box height="100%">
                 <Typography
                   variant="caption"
                   color="text.secondary"
@@ -209,7 +177,6 @@ function DetailsLayout({ data }) {
           </Box>
         </Box>
 
-        {/* Optional: show summary separately if both exist */}
         {storyline && summary && (
           <>
             <Divider />

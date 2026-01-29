@@ -4,8 +4,6 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 function ProfileInfo() {
   const { isUserLoggedIn, currentUser } = useContext(AuthContext);
-  console.log(isUserLoggedIn);
-  console.log(currentUser);
   return (
     <Grid2 container>
       <Grid2 item size={4}>

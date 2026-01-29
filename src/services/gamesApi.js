@@ -5,7 +5,6 @@ export const fetchGamesFromSearch = async (query, page) => {
   const { data } = await axios.get(
     `https://2bie42lu38.execute-api.us-east-2.amazonaws.com/default/searchIGDB?q=${query}&page=${page}`,
   );
-  console.log(data);
   return data;
 };
 
