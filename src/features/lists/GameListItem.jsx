@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ExpandIcon from "@mui/icons-material/Expand";
 import EditIcon from "@mui/icons-material/Edit";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 // import ClickMenu from "../../ui/ClickMenu";
@@ -61,24 +62,35 @@ function GameListItem({
       onDragStart={(e) => {
         onDragItem(index);
         console.log("dragging: ", index);
-        const ghost = document.createElement("div");
-        ghost.textContent = name;
-        ghost.style.padding = "10px 16px";
-        ghost.style.background = "white";
-        ghost.style.border = "1px solid #ccc";
-        ghost.style.borderRadius = "6px";
+        const ghost = document.getElementById("ghost");
 
-        document.body.appendChild(ghost);
-
-        e.dataTransfer.setDragImage(ghost, 80, 20);
-
-        setTimeout(() => ghost.remove(), 0);
+        if (ghost) {
+          e.dataTransfer.setDragImage(ghost, 20, 20);
+        }
       }}
       onDragEnd={() => {
         onDragItem(null);
         console.log("stopped dragging: ", index);
       }}
     >
+      <div
+        id="ghost"
+        style={{
+          position: "absolute",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          top: -9999,
+          left: -9999,
+          width: 25,
+          height: 25,
+          background: "white",
+          border: "1px solid black",
+          borderRadius: "3px",
+        }}
+      >
+        <ExpandIcon />
+      </div>
       <ListItemButton
         onClick={handleClick}
         sx={{
