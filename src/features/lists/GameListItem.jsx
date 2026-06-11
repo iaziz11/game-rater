@@ -11,6 +11,7 @@ import {
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
+// import ClickMenu from "../../ui/ClickMenu";
 
 function GameListItem({
   name,
@@ -19,6 +20,7 @@ function GameListItem({
   handleClick,
   onDelete,
   onEdit,
+  onDragItem,
   icon,
   thumbnail = "/sword.png",
   deletable = true,
@@ -29,8 +31,54 @@ function GameListItem({
   const hasRealRating =
     rating !== undefined && rating !== null && String(rating).trim() !== "";
 
+  // const handleAddToListClick = (event) => {
+  //   event.stopPropagation?.();
+  //   setIsMenuOpened(true);
+  //   setMenuCoordinates({
+  //     mouseX: event.clientX + 2,
+  //     mouseY: event.clientY - 6,
+  //   });
+  // };
+
+  // const handleAddToListClick = (event, gameInfo) => {
+  //   setIsMenuOpened(true);
+  //   setMenuCoordinates({
+  //     mouseX: event.clientX + 2,
+  //     mouseY: event.clientY - 6,
+  //   });
+  //   setMenuGameInfo(gameInfo);
+  // };
+
+  // const handleMenuClose = () => {
+  //   setIsMenuOpened(false);
+  //   setMenuCoordinates({ mouseX: null, mouseY: null });
+  // };
+
   return (
-    <ListItem disablePadding>
+    <ListItem
+      disablePadding
+      draggable
+      onDragStart={(e) => {
+        onDragItem(index);
+        console.log("dragging: ", index);
+        const ghost = document.createElement("div");
+        ghost.textContent = name;
+        ghost.style.padding = "10px 16px";
+        ghost.style.background = "white";
+        ghost.style.border = "1px solid #ccc";
+        ghost.style.borderRadius = "6px";
+
+        document.body.appendChild(ghost);
+
+        e.dataTransfer.setDragImage(ghost, 80, 20);
+
+        setTimeout(() => ghost.remove(), 0);
+      }}
+      onDragEnd={() => {
+        onDragItem(null);
+        console.log("stopped dragging: ", index);
+      }}
+    >
       <ListItemButton
         onClick={handleClick}
         sx={{
@@ -162,6 +210,20 @@ function GameListItem({
                 </IconButton>
               </Tooltip>
             )}
+
+            {/* {isGameRow && (
+              <ClickMenu
+                isOpen={isMenuOpened}
+                mouseX={menuCoordinates.mouseX}
+                mouseY={menuCoordinates.mouseY}
+                handleClose={handleMenuClose}
+                gameInfo={{
+                  gameId,
+                  gameName: name,
+                  gameThumbnail: thumbUrl || coverUrl || "",
+                }}
+              />
+            )} */}
 
             {deletable && (
               <Tooltip title={isGameRow ? "Remove from list" : "Delete list"}>

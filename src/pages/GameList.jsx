@@ -20,10 +20,12 @@ import { fetchRatingsFromList } from "../services/ratings";
 import { AuthContext } from "../contexts/AuthContext";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import GameListItemSeparator from "../features/lists/GameListItemSeparator";
 
 function GameList() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [curGameInfo, setCurGameInfo] = useState(null);
+  const [indexBeingDragged, setIndexBeingDragged] = useState(null);
 
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -89,6 +91,17 @@ function GameList() {
     setIsDeleteModalOpen(true);
   };
 
+  const onItemDrop = (position) => {
+    if (position === indexBeingDragged) return;
+    setDisplayedGames((prev) => {
+      const copy = [...prev];
+
+      const [removed] = copy.splice(indexBeingDragged - 1, 1);
+      copy.splice(position - 1, 0, removed);
+
+      return copy;
+    });
+  };
   const handleSubmitDelete = async (e) => {
     e.stopPropagation();
     if (!curGameInfo?.listId || !curGameInfo?.gameId) return;
@@ -195,19 +208,27 @@ function GameList() {
       {gamesCount > 0 ? (
         <SortedUl sortByName={handleSortAlpha} sortByRating={handleSortRating}>
           {displayedGames.map((g, idx) => (
-            <GameListItem
-              index={idx + 1}
-              key={g.gameId}
-              name={g.gameName}
-              rating={ratings[g.gameId] ?? null}
-              onDelete={(event) =>
-                handleClickDelete(event, listId, g.gameId, g.gameName)
-              }
-              thumbnail={g.gameThumbnail}
-              handleClick={() => handleClickGame(g.gameId)}
-              editable={false}
-              deletable={!!listData?.userCreated}
-            />
+            <>
+              <GameListItem
+                index={idx + 1}
+                key={g.gameId}
+                name={g.gameName}
+                rating={ratings[g.gameId] ?? null}
+                onDelete={(event) =>
+                  handleClickDelete(event, listId, g.gameId, g.gameName)
+                }
+                onDragItem={setIndexBeingDragged}
+                thumbnail={g.gameThumbnail}
+                handleClick={() => handleClickGame(g.gameId)}
+                editable={false}
+                deletable={!!listData?.userCreated}
+              />
+              <GameListItemSeparator
+                key={idx}
+                handleItemDrop={onItemDrop}
+                position={idx + 1}
+              />
+            </>
           ))}
         </SortedUl>
       ) : (

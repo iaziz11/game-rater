@@ -84,10 +84,7 @@ function SortedUl({ children, sortByName, sortByRating }) {
         </Box>
       </Paper>
 
-      <List
-        disablePadding
-        sx={{ display: "flex", flexDirection: "column", gap: 1 }}
-      >
+      <List disablePadding sx={{ display: "flex", flexDirection: "column" }}>
         {children}
       </List>
     </Box>

@@ -26,10 +26,10 @@ function DetailsLayout({ data }) {
   const ttb = data?.time_to_beat;
   if (Array.isArray(ttb) && ttb.length > 0) {
     timeToBeatSeconds =
-      ttb[0]?.hastily ?? ttb[0]?.normally ?? ttb[0]?.completely ?? null;
+      ttb[0]?.normally ?? ttb[0]?.hastily ?? ttb[0]?.completely ?? null;
   } else if (ttb && typeof ttb === "object") {
     timeToBeatSeconds =
-      ttb?.hastily ?? ttb?.normally ?? ttb?.completely ?? null;
+      ttb?.normally ?? ttb?.hastily ?? ttb?.completely ?? null;
   }
 
   const releaseText = first_release_date

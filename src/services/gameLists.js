@@ -35,8 +35,7 @@ export async function removeGameFromList(listId, gameId) {
   }
   const data = docSnap.data();
 
-  const updatedArray = data.games.filter((item) => item.gameId !== gameId);
-
+  const updatedArray = data.games.filter((item) => item.gameId != gameId);
   await updateDoc(docRef, {
     games: updatedArray,
   });
