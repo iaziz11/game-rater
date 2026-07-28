@@ -212,6 +212,7 @@ function GameList() {
               <GameListItem
                 index={idx + 1}
                 key={g.gameId}
+                gameId={g.gameId}
                 name={g.gameName}
                 rating={ratings[g.gameId] ?? null}
                 onDelete={(event) =>

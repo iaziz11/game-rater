@@ -2,16 +2,22 @@ import {
   Avatar,
   Box,
   Chip,
+  CircularProgress,
   IconButton,
   ListItem,
   ListItemButton,
+  Rating,
   Tooltip,
   Typography,
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ExpandIcon from "@mui/icons-material/Expand";
 import EditIcon from "@mui/icons-material/Edit";
+import { AuthContext } from "../../contexts/AuthContext";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
+import { useContext, useEffect, useRef, useState } from "react";
+import { changeGameRating } from "../../services/ratings";
+import { StarBorder } from "@mui/icons-material";
 // import ClickMenu from "../../ui/ClickMenu";
 
 function GameListItem({
@@ -22,15 +28,44 @@ function GameListItem({
   onDelete,
   onEdit,
   onDragItem,
+  gameId,
   icon,
   thumbnail = "/sword.png",
   deletable = true,
   editable = true,
 }) {
+  const ref = useRef();
+
+  const [isRating, setIsRating] = useState(false);
+  const [curRating, setCurRating] = useState(rating);
+  const [isSavingRating, setIsSavingRating] = useState(false);
+  const [curHover, setCurHover] = useState(rating ?? -1);
   const isGameRow = typeof index === "number" && Number.isFinite(index);
+  const { currentUser } = useContext(AuthContext);
 
   const hasRealRating =
     rating !== undefined && rating !== null && String(rating).trim() !== "";
+
+  const handleRatingClick = (e) => {
+    e.stopPropagation();
+    setIsRating(true);
+  };
+
+  const handleRatingChange = async (e, newValue) => {
+    e.stopPropagation();
+    const safeValue = newValue ?? 0;
+    setCurRating(safeValue);
+
+    try {
+      setIsSavingRating(true);
+      await changeGameRating(gameId, currentUser.email, safeValue);
+    } catch (e) {
+      console.log("Could not save rating:", e?.message || e);
+    } finally {
+      setIsSavingRating(false);
+      setIsRating(false);
+    }
+  };
 
   // const handleAddToListClick = (event) => {
   //   event.stopPropagation?.();
@@ -55,8 +90,26 @@ function GameListItem({
   //   setMenuCoordinates({ mouseX: null, mouseY: null });
   // };
 
+  useEffect(() => {
+    function handleOutsideClick(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setIsRating(false);
+      }
+    }
+
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+
+  const displayValue =
+    curHover !== -1 ? curHover : curRating === 0 ? "-" : curRating;
+
   return (
     <ListItem
+      ref={ref}
       disablePadding
       draggable
       onDragStart={(e) => {
@@ -176,24 +229,52 @@ function GameListItem({
 
           {isGameRow && (
             <Box sx={{ justifySelf: "end" }}>
-              {hasRealRating ? (
-                <Chip
-                  icon={<StarRoundedIcon fontSize="small" />}
-                  label={rating}
-                  size="small"
-                  sx={{
-                    fontWeight: 900,
-                    mr: "20px",
-                    bgcolor: "grey.100",
-                    "& .MuiChip-icon": { mr: 0.25 },
-                  }}
-                />
+              {!isRating ? (
+                hasRealRating ? (
+                  <Chip
+                    icon={<StarRoundedIcon fontSize="small" />}
+                    label={curRating}
+                    onClick={handleRatingClick}
+                    size="small"
+                    sx={{
+                      fontWeight: 900,
+                      mr: "20px",
+                      bgcolor: "grey.100",
+                      "& .MuiChip-icon": { mr: 0.25 },
+                    }}
+                  />
+                ) : (
+                  <Chip
+                    label="—"
+                    size="small"
+                    onClick={handleRatingClick}
+                    sx={{ bgcolor: "grey.100", fontWeight: 900, mr: "30px" }}
+                  />
+                )
               ) : (
-                <Chip
-                  label="—"
-                  size="small"
-                  sx={{ bgcolor: "grey.100", fontWeight: 900, mr: "30px" }}
-                />
+                <>
+                  <Rating
+                    name="hover-feedback"
+                    value={curRating}
+                    precision={0.5}
+                    max={10}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={handleRatingChange}
+                    onChangeActive={(_, newHover) => setCurHover(newHover)}
+                    emptyIcon={
+                      <StarBorder
+                        style={{ opacity: 0.55 }}
+                        fontSize="inherit"
+                      />
+                    }
+                  />
+                  {isSavingRating && <CircularProgress size={16} />}
+                  {displayValue !== null && (
+                    <Typography variant="subtitle2" sx={{ fontWeight: 900 }}>
+                      {displayValue}
+                    </Typography>
+                  )}
+                </>
               )}
             </Box>
           )}
